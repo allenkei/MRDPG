@@ -65,7 +65,7 @@ for (scenario in c("f6")) { # c("f1", "f2", "f3", "f4", "f5")
   num_seq <- 100
   
   if (scenario == "f1") {
-    true_CP <- c()
+    true_CP <- true_CP <- c(70, 140)
   } else if (scenario == "f2") {
     true_CP <- c(20, 60, 80, 160, 180)
   } else if (scenario == "f3") {
@@ -74,8 +74,6 @@ for (scenario in c("f6")) { # c("f1", "f2", "f3", "f4", "f5")
     true_CP <- c(20, 60, 80, 160, 180)
   } else if (scenario == "f5") {
     true_CP <- c(50, 100, 150)
-  } else if (scenario == "f6") {
-    true_CP <- c(70,140)
   }
   
 
