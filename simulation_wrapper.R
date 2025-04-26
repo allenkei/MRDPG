@@ -87,7 +87,7 @@ results <- simulate_scenario(scenario, true_CP, num_node, num_seq)
 ############
 
 # All metrics, after refinement
-load("results/f1_50.RData")
+#load("results/f1_50.RData")
 num_thresholds <- dim(results[[1]])[2]
 summary_matrix <- matrix(NA, nrow = 4, ncol = num_thresholds)
 

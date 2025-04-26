@@ -24,6 +24,8 @@ simulate_scenario_competitor <- function(scenario, true_cp, num_node, num_seq, c
   for(seq_iter in 1:num_seq) {
     # Generate Data 1-by-1
     set.seed(seq_iter)
+    cat("\nIteration", seq_iter, "begin.\n")
+    
     A.all_seq <- generate(scenario, num_node, 1, FALSE) # (1,200,50,50,4) # NOTE the first dim = 1
     
     if(competitor == "kerSeg_net"){
@@ -59,10 +61,10 @@ simulate_scenario_competitor <- function(scenario, true_cp, num_node, num_seq, c
 
 
 
-for (scenario in c("f6")) { # c("f1", "f2", "f3", "f4", "f5")
+for (scenario in c("f1")) { ##### c("f1", "f2", "f3", "f4", "f5")
   
   num_node <- 50
-  num_seq <- 100
+  num_seq <- 3
   
   if (scenario == "f1") {
     true_CP <- true_CP <- c(70, 140)
@@ -76,12 +78,12 @@ for (scenario in c("f6")) { # c("f1", "f2", "f3", "f4", "f5")
     true_CP <- c(50, 100, 150)
   }
   
-
+  
   results <- simulate_scenario_competitor(scenario, true_CP, num_node, num_seq, "kerSeg_net")
   results <- simulate_scenario_competitor(scenario, true_CP, num_node, num_seq, "kerSeg_fro")
   results <- simulate_scenario_competitor(scenario, true_CP, num_node, num_seq, "gSeg_net")
   results <- simulate_scenario_competitor(scenario, true_CP, num_node, num_seq, "gSeg_fro")
   
 }
-  
+
 

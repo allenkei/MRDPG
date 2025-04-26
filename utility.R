@@ -221,17 +221,17 @@ get_dirichlet_params <- function(n_1, n_2, L, d){
   X = rdirichlet(n_1, dirichlet_xy_1$x) # n, d
   Y = rdirichlet(n_2, dirichlet_xy_1$y) # n, d
   
+  prob = seq(0,1,  1/(4*L))
+  
   # before CP
   W_1 =  array(NA,c(d, d, L))
-  prob = seq(0,1,  1/(4*L))
   for (layer in 1: L){
     W_1[, , layer] = matrix(runif(d^2,prob[2*L+layer], prob[2*L+layer+1]), ncol=d) 
   }
   
   # after CP
   W_2 =  array(NA,c(d, d, L))
-  prob = seq(0,1,  1/(4*L))
-  for (layer in L: 1){ # reverse order
+  for (layer in L: 1){  # reverse order
     W_2[, , layer] = matrix(runif(d^2,prob[3*L+layer], prob[3*L+layer+1]), ncol=d) 
   }
   
