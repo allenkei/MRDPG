@@ -13,7 +13,7 @@ simulate_scenario <- function(scenario, true_cp, num_node = 50, num_seq = 10) {
   num_layer <- dim(A.all_seq)[5] 
   hat.rank <- c(15, 15, num_layer)
   
-  threshold_list <- rev(c(0.05, 0.1, 0.15, 0.2, 0.25) * num_node*sqrt(num_layer)*(log(num_T/2))^(3/2))
+  threshold_list <- rev(c(0.05, 0.08, 0.1, 0.12, 0.15, 0.2, 0.25) * num_node*sqrt(num_layer)*(log(num_T/2))^(3/2))
   
   intervals <- construct_intervals(num_T/2, sqrt(1/2), 4)
   
@@ -97,6 +97,6 @@ for (i in 1:4) {
   summary_matrix[i, ] <- colMeans(stat_matrix, na.rm = TRUE)
 }
 
-colnames(summary_matrix) <- paste0(rev(c(0.05, 0.1, 0.15, 0.2, 0.25)))
+colnames(summary_matrix) <- paste0(rev(c(0.05, 0.08, 0.1, 0.12, 0.15, 0.2, 0.25)))
 summary_matrix
 
