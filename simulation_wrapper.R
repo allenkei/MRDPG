@@ -75,7 +75,7 @@ if (scenario == "f1") {
   true_CP <- c(50, 100, 150)
 } 
 
-num_node <- 50
+num_node <- 100
 num_seq <- 100
 
 results <- simulate_scenario(scenario, true_CP, num_node, num_seq)

@@ -59,12 +59,12 @@ simulate_scenario_competitor <- function(scenario, true_cp, num_node, num_seq, c
 ###########
 
 
-
+scenario <- "f1"
 
 for (scenario in c("f1")) { ##### c("f1", "f2", "f3", "f4", "f5")
   
-  num_node <- 50
-  num_seq <- 3
+  num_node <- 100
+  num_seq <- 100
   
   if (scenario == "f1") {
     true_CP <- true_CP <- c(70, 140)
