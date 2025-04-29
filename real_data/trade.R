@@ -32,8 +32,8 @@ dim(A.tensor)
 
 
 # proposed method
-hat.rank <- c(15, 15, num_layer)
-threshold_ratio <- c(0.05, 0.08, 0.1, 0.12, 0.15, 0.2, 0.25)
+hat.rank <- c(10, 10, num_layer)
+threshold_ratio <- c(0.2, 0.3, 0.4, 0.5)
 threshold_list <- rev(threshold_ratio * num_node*sqrt(num_layer)*(log(num_time/2))^(3/2))
 intervals <- construct_intervals(num_time/2, sqrt(1/2), 4)
 
@@ -64,10 +64,10 @@ for (i in 1:(length(results_g)-1)) {
 
 
 # competitor methods
-result_kerSeg_net <- Evaluation_kerSeg(A.tensor, p_threshold=0.05, is_experiment=TRUE, true_CP, "kerSeg_net")
-result_kerSeg_fro <- Evaluation_kerSeg(A.tensor, p_threshold=0.05, is_experiment=TRUE, true_CP, "kerSeg_fro")
-result_gSeg_net <- Evaluation_gSeg(A.tensor, p_threshold=0.05, is_experiment=TRUE, true_CP, "gSeg_net")
-result_gSeg_fro <- Evaluation_gSeg(A.tensor, p_threshold=0.05, is_experiment=TRUE, true_CP, "gSeg_fro")
+result_kerSeg_net <- Evaluation_kerSeg(A.tensor, p_threshold=0.01, is_experiment=TRUE, true_CP, "kerSeg_net")
+result_kerSeg_fro <- Evaluation_kerSeg(A.tensor, p_threshold=0.01, is_experiment=TRUE, true_CP, "kerSeg_fro")
+result_gSeg_net <- Evaluation_gSeg(A.tensor, p_threshold=0.01, is_experiment=TRUE, true_CP, "gSeg_net")
+result_gSeg_fro <- Evaluation_gSeg(A.tensor, p_threshold=0.01, is_experiment=TRUE, true_CP, "gSeg_fro")
 
 
 # save the result
@@ -76,11 +76,6 @@ kerSeg_fro <- data_names[result_kerSeg_fro]
 gSeg_net <- data_names[result_gSeg_net]
 gSeg_fro <- data_names[result_gSeg_fro]
 
-save(output, file = paste0("real_data/results/trade_proposed.RData"))
-save(kerSeg_net, file = paste0("real_data/results/trade_kerSeg_net.RData"))
-save(kerSeg_fro, file = paste0("real_data/results/trade_kerSeg_fro.RData"))
-save(gSeg_net, file = paste0("real_data/results/trade_gSeg_net.RData"))
-save(gSeg_fro, file = paste0("real_data/results/trade_gSeg_fro.RData"))
 
 # printing
 output
@@ -88,5 +83,12 @@ kerSeg_net
 kerSeg_fro
 gSeg_net
 gSeg_fro
+
+
+save(output, file = paste0("real_data/results/trade_proposed.RData"))
+save(kerSeg_net, file = paste0("real_data/results/trade_kerSeg_net.RData"))
+save(kerSeg_fro, file = paste0("real_data/results/trade_kerSeg_fro.RData"))
+save(gSeg_net, file = paste0("real_data/results/trade_gSeg_net.RData"))
+save(gSeg_fro, file = paste0("real_data/results/trade_gSeg_fro.RData"))
 
 
