@@ -75,54 +75,54 @@ estimate_thpca <- function(Y.tensor, hat.rank, ub = 1, lb = 0, tmax = 20){
 # CUSUM Statistics #
 ####################
 
-CUSUM_frobenius <- function(obj, s, e, t, rank, verbose = TRUE) {
-  # Frobenius norm hat{P}^{s,t}, hat{P}^{s+1,t}
-  # hat{P}^{a,b} = TH-PCA((b-a)^{-1}  \sum_{u =a}^b A(u) ,(d,d,m))
-  if (verbose) {print(paste0("s = ", s, ", e = ", e, ", t = ", t, "."))}
-  
-  sum_s_t  <- (1/(t-s)) * as.tensor( apply(obj[(s+1):t, , , , drop = FALSE], c(2, 3, 4), sum) )
-  sum_t_e <- (1/(e-t)) * as.tensor( apply(obj[(t+1):e, , , , drop = FALSE], c(2, 3, 4), sum) )
-  
-  P_s_t  <- estimate_thpca(sum_s_t, rank, tmax = 20)
-  P_t_e <- estimate_thpca(sum_t_e, rank, tmax = 20)
-  
-  return(diff_frobenius(P_s_t, P_t_e))
-}
-
-CUSUM_layer <- function(obj, s, e, t, rank, verbose = TRUE) {
-  # Layer-wise Frobenius norm 
-  # max_l hat{P}^{s,t}_(l), hat{P}^{s+1,t}_(l)
-  # hat{P}^{a,b} = TH-PCA((b-a)^{-1}  \sum_{u =a}^b A(u) ,(d,d,m))
-  if (verbose) {print(paste0("s = ", s, ", e = ", e, ", t = ", t, "."))}
-  
-  sum_s_t  <- (1/(t-s)) * as.tensor( apply(obj[(s+1):t, , , , drop = FALSE], c(2, 3, 4), sum) )
-  sum_t_e <- (1/(e-t)) * as.tensor( apply(obj[(t+1):e, , , , drop = FALSE], c(2, 3, 4), sum) )
-  
-  P_s_t  <- estimate_thpca(sum_s_t, rank, tmax = 20)
-  P_t_e  <- estimate_thpca(sum_t_e, rank, tmax = 20)
-  
-  frobenius_diffs <- sapply(1:dim(obj)[4] , function(l) {
-    diff_frobenius(P_s_t[, , l], P_t_e[, , l])
-  })
-  
-  return(max(frobenius_diffs))
-}
-
-CUSUM_frob_SBS <- function(obj, s, e, t, rank, verbose = TRUE) {
-  # Frobenius norm Using Weighting suggested in SBS
-  # || sqrt((e-t)/((e-s)(t-s))) hat{P}^{s,t}, sqrt((t-s)/((e-s)(e-t))) hat{P}^{s+1,t}||
-  # Using Weighting suggested in SBS
-  # hat{P}^{a,b} = TH-PCA(\sum_{u =a}^b A(u) ,(d,d,m))
-  if (verbose) {print(paste0("s = ", s, ", e = ", e, ", t = ", t, "."))}
-  
-  sum_s_t  <- as.tensor( apply(obj[(s+1):t, , , , drop = FALSE], c(2, 3, 4), sum) )
-  sum_t_e <- as.tensor( apply(obj[(t+1):e, , , , drop = FALSE], c(2, 3, 4), sum) )
-  
-  P_s_t  <- sqrt((e-t)/(e-s)/(t-s)) * estimate_thpca(sum_s_t, rank, tmax = 20)
-  P_t_e <- sqrt((t-s)/(e-s)/(e-t)) * estimate_thpca(sum_t_e, rank, tmax = 20)
-  
-  return(diff_frobenius(P_s_t, P_t_e))
-}
+# CUSUM_frobenius <- function(obj, s, e, t, rank, verbose = TRUE) {
+#   # Frobenius norm hat{P}^{s,t}, hat{P}^{s+1,t}
+#   # hat{P}^{a,b} = TH-PCA((b-a)^{-1}  \sum_{u =a}^b A(u) ,(d,d,m))
+#   if (verbose) {print(paste0("s = ", s, ", e = ", e, ", t = ", t, "."))}
+#   
+#   sum_s_t  <- (1/(t-s)) * as.tensor( apply(obj[(s+1):t, , , , drop = FALSE], c(2, 3, 4), sum) )
+#   sum_t_e <- (1/(e-t)) * as.tensor( apply(obj[(t+1):e, , , , drop = FALSE], c(2, 3, 4), sum) )
+#   
+#   P_s_t  <- estimate_thpca(sum_s_t, rank, tmax = 20)
+#   P_t_e <- estimate_thpca(sum_t_e, rank, tmax = 20)
+#   
+#   return(diff_frobenius(P_s_t, P_t_e))
+# }
+# 
+# CUSUM_layer <- function(obj, s, e, t, rank, verbose = TRUE) {
+#   # Layer-wise Frobenius norm 
+#   # max_l hat{P}^{s,t}_(l), hat{P}^{s+1,t}_(l)
+#   # hat{P}^{a,b} = TH-PCA((b-a)^{-1}  \sum_{u =a}^b A(u) ,(d,d,m))
+#   if (verbose) {print(paste0("s = ", s, ", e = ", e, ", t = ", t, "."))}
+#   
+#   sum_s_t  <- (1/(t-s)) * as.tensor( apply(obj[(s+1):t, , , , drop = FALSE], c(2, 3, 4), sum) )
+#   sum_t_e <- (1/(e-t)) * as.tensor( apply(obj[(t+1):e, , , , drop = FALSE], c(2, 3, 4), sum) )
+#   
+#   P_s_t  <- estimate_thpca(sum_s_t, rank, tmax = 20)
+#   P_t_e  <- estimate_thpca(sum_t_e, rank, tmax = 20)
+#   
+#   frobenius_diffs <- sapply(1:dim(obj)[4] , function(l) {
+#     diff_frobenius(P_s_t[, , l], P_t_e[, , l])
+#   })
+#   
+#   return(max(frobenius_diffs))
+# }
+# 
+# CUSUM_frob_SBS <- function(obj, s, e, t, rank, verbose = TRUE) {
+#   # Frobenius norm Using Weighting suggested in SBS
+#   # || sqrt((e-t)/((e-s)(t-s))) hat{P}^{s,t}, sqrt((t-s)/((e-s)(e-t))) hat{P}^{s+1,t}||
+#   # Using Weighting suggested in SBS
+#   # hat{P}^{a,b} = TH-PCA(\sum_{u =a}^b A(u) ,(d,d,m))
+#   if (verbose) {print(paste0("s = ", s, ", e = ", e, ", t = ", t, "."))}
+#   
+#   sum_s_t  <- as.tensor( apply(obj[(s+1):t, , , , drop = FALSE], c(2, 3, 4), sum) )
+#   sum_t_e <- as.tensor( apply(obj[(t+1):e, , , , drop = FALSE], c(2, 3, 4), sum) )
+#   
+#   P_s_t  <- sqrt((e-t)/(e-s)/(t-s)) * estimate_thpca(sum_s_t, rank, tmax = 20)
+#   P_t_e <- sqrt((t-s)/(e-s)/(e-t)) * estimate_thpca(sum_t_e, rank, tmax = 20)
+#   
+#   return(diff_frobenius(P_s_t, P_t_e))
+# }
 
 CUSUM_step1 <- function(obj, s, e, t, obj.B, verbose = TRUE) {
   # Tensor Weighted Inner Product
